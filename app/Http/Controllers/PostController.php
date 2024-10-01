@@ -11,7 +11,7 @@ class PostController extends Controller
 {
     public function index(): Collection
     {
-        return Post::all();
+        return Post::query()->latest()->get();
     }
 
     public function store(Request $request): JsonResponse
@@ -19,11 +19,13 @@ class PostController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
+            'image' => 'required|string',
         ]);
 
         $post = Post::query()->create([
             'title' => $request->get('title'),
             'content' => $request->get('content'),
+            'image' => $request->get('image'),
         ]);
 
         return response()->json($post, 201);
@@ -39,9 +41,14 @@ class PostController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
+            'image' => 'required|string',
         ]);
 
-        $post->update($request->all());
+        $post->update([
+            'title' => $request->get('title'),
+            'content' => $request->get('content'),
+            'image' => $request->get('image'),
+        ]);
 
         return response()->json($post);
     }
