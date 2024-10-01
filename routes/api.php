@@ -16,5 +16,9 @@ Route::apiResource('posts', PostController::class)
     ->only(['index', 'show']);
 
 Route::apiResource('posts', PostController::class)
-    ->only(['store', 'update', 'destroy'])
+//    ->only(['store', 'update', 'destroy'])
+    ->only(['store', 'destroy'])
+    ->middleware('auth:sanctum');
+
+Route::post('posts/{post}', [PostController::class, 'update'])
     ->middleware('auth:sanctum');
